@@ -18,7 +18,9 @@ def extract(data_path, write_path):
         #print(image_name)
         image = cv2.imread(image_path,0)
         final_path = os.path.join(write_path,image_name)
-        cv2.imwrite(final_path, cv2.Canny(image, 120, 120))
+        canny = cv2.Canny(image, 100, 120)
+        #canny = cv2.resize(canny, (192, 96))
+        cv2.imwrite(final_path, canny)
 
 if __name__ == '__main__':
 
