@@ -4,11 +4,10 @@ from PIL import ImageDraw
 import random
 import string
 
-SAMPLES = 3
+SAMPLES = 10
 
 def getRandom3():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=3))
-
 
 def getPlates():
     for i in range(SAMPLES):
