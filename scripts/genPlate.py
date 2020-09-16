@@ -36,10 +36,10 @@ def GenCh(f,val):
     return A
 
 def GenCh1(f,val):
-    img=Image.new("RGB", (23,70),(255,255,255))
+    img=Image.new("RGB", (60,160),(255,255,255))
     draw = ImageDraw.Draw(img)
     # draw.text((0, 2),val.decode('utf-8'),(0,0,0),font=f)
-    draw.text((0, 2), val, (0, 0, 0), font=f)
+    draw.text((0, 2), val, fill=(0, 0, 0), font=f)
     A = np.array(img)
     return A
 
@@ -55,21 +55,20 @@ class GenPlate:
 
     def __init__(self,fontCh,fontEng):
 
-        self.fontC =  ImageFont.truetype(fontCh,43,0);
-        self.fontE =  ImageFont.truetype(fontEng,60,0);
-        self.img=np.array(Image.new("RGB", (226,70),(255,255,255)))
-        self.bg  = cv2.resize(cv2.imread("../images/template.bmp"),(226,70));
-        self.smu = cv2.imread("../images/smu2.jpg");
+
+        self.fontE =  ImageFont.truetype(fontEng,120,0);
+        self.img=np.array(Image.new("RGB", (435,220),(255,255,255)))
+        self.bg  = cv2.resize(cv2.imread("../images/mass_plate_template.bmp"),(435,220));
+        #self.smu = cv2.imread("../images/smu2.jpg");
 
 
     def draw(self,val):
-        offset= 2 ;
+        offset= 5 ;
 
-        self.img[0:70,offset+8:offset+8+23]= GenCh(self.fontC,val[0]);
-        self.img[0:70,offset+8+23+6:offset+8+23+6+23]= GenCh1(self.fontE,val[1]);
+        self.img[60:220,offset+8+23+6:offset+8+23+6+60]= GenCh1(self.fontE,val[1]);
         for i in range(5):
-            base = offset+8+23+6+23+17 +i*23 + i*6 ;
-            self.img[0:70, base  : base+23]= GenCh1(self.fontE,val[i+2]);
+            base = offset+8+23+6+23+25 +i*60 + i*6 ;
+            self.img[60:220, base  : base+60]= GenCh1(self.fontE,val[i+2]);
         return self.img
 
     def generate(self,text):
@@ -78,7 +77,7 @@ class GenPlate:
             fg = cv2.bitwise_not(fg);
             com = cv2.bitwise_or(fg,self.bg);
 
-            return com
+            return fg
 
     def genPlateString(self,pos,val):
         plateStr = "";
@@ -115,4 +114,3 @@ if __name__ == '__main__':
     G = GenPlate("../font/platech.ttf",'../font/platechar.ttf')
 
     G.genBatch(10,2,range(31,65),"../GeneratedPlateSamples",(272,72))
-
